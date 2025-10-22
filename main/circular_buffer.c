@@ -45,11 +45,24 @@ int contains(struct circularBuffer *bufferPtr, int value) {
 
 int addElement(struct circularBuffer *bufferPtr, int value) {
   if ((bufferPtr->tail + 1) % bufferPtr->maxLength == bufferPtr->head) {
-    return INT_MIN;
+    bufferPtr->data[bufferPtr->tail] = value;
+    bufferPtr->tail = (bufferPtr->tail + 1) % bufferPtr->maxLength;
+    bufferPtr->head = (bufferPtr->head + 1) % bufferPtr->maxLength;
+    return value;
   }
   bufferPtr->data[bufferPtr->tail] = value;
   bufferPtr->tail = (bufferPtr->tail + 1) % bufferPtr->maxLength;
   return value;
+}
+
+int length(struct circularBuffer *bufferPtr) {
+  if (bufferPtr->tail > bufferPtr->head) {
+    return bufferPtr->tail - bufferPtr->head;
+  } else if (bufferPtr->tail == bufferPtr->head) {
+    return 0;
+  } else {
+    return (bufferPtr->maxLength - bufferPtr->head) + bufferPtr->tail;
+  }
 }
 
 int removeValue(struct circularBuffer *bufferPtr, int value) {
@@ -84,4 +97,8 @@ int removeHead(struct circularBuffer *bufferPtr) {
   bufferPtr->head = (bufferPtr->head + 1) % bufferPtr->maxLength;
 
   return r;
+}
+
+int get(struct circularBuffer *bufferPtr, int index) {
+  return bufferPtr->data[(bufferPtr->head + index)%bufferPtr->maxLength];
 }

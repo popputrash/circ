@@ -69,5 +69,9 @@ int removeHead(struct circularBuffer* bufferPtr);
  */
 void printBuffer(struct circularBuffer* bufferPtr);
 
+int length(struct circularBuffer* bufferPtr);
+
+int get(struct circularBuffer* bufferPtr, int index);
+
 #endif
 
